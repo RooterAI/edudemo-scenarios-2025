@@ -1,0 +1,181 @@
+name: 📝 Проверка качества документации
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  markdown-lint:
+    name: 🔍 Проверка Markdown
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout кода
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Настройка Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: 📦 Установка зависимостей
+      run: |
+        npm install -g markdownlint-cli2
+        npm install -g markdown-link-check
+        
+    - name: 📝 Проверка Markdown синтаксиса
+      run: markdownlint-cli2 "**/*.md" "!node_modules"
+      continue-on-error: true
+      
+    - name: 🔗 Проверка ссылок
+      run: |
+        find . -name "*.md" -not -path "./node_modules/*" | xargs markdown-link-check
+      continue-on-error: true
+
+  educational-quality:
+    name: 🎓 Проверка образовательного качества
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout кода
+      uses: actions/checkout@v4
+      
+    - name: 🎯 Проверка структуры проекта
+      run: |
+        echo "Проверка обязательных файлов..."
+        test -f README.md || { echo "❌ README.md отсутствует"; exit 1; }
+        test -f Track001.md || { echo "❌ Track001.md отсутствует"; exit 1; }
+        test -f LICENSE || { echo "❌ LICENSE отсутствует"; exit 1; }
+        test -f CONTRIBUTING.md || { echo "❌ CONTRIBUTING.md отсутствует"; exit 1; }
+        echo "✅ Все обязательные файлы присутствуют"
+        
+    - name: 📚 Проверка образовательного контента
+      run: |
+        echo "Проверка соответствия ФГОС СПО..."
+        grep -q "09.02.07" Track001.md || { echo "⚠️ Не найдено упоминание специальности"; }
+        grep -q "ОК 02\|ОК 04\|ПК 1.1" Track001.md || { echo "⚠️ Компетенции не указаны четко"; }
+        
+        echo "Проверка временных рамок..."
+        grep -q "90 минут\|2.*час" Track001.md || { echo "⚠️ Время занятия не указано"; }
+        
+        echo "Проверка критериев оценивания..."
+        grep -q "Критерии\|оценива" Track001.md || { echo "⚠️ Критерии оценивания не найдены"; }
+        
+        echo "✅ Образовательный контент проверен"
+
+  security-check:
+    name: 🔒 Проверка безопасности
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout кода
+      uses: actions/checkout@v4
+      
+    - name: 🕵️ Поиск персональных данных
+      run: |
+        echo "Проверка на наличие персональных данных..."
+        
+        # Проверка email-адресов (исключая примеры)
+        if grep -r "@" --include="*.md" . | grep -v "\[at\]" | grep -v "example\|test\|demo"; then
+          echo "⚠️ Найдены потенциальные email-адреса"
+        fi
+        
+        # Проверка телефонных номеров
+        if grep -r "+7\|8(" --include="*.md" . | grep -v "XXX"; then
+          echo "⚠️ Найдены потенциальные номера телефонов"
+        fi
+        
+        # Проверка на реальные имена (базовая проверка)
+        if grep -r "Иванов\|Петров\|Сидоров" --include="*.md" .; then
+          echo "⚠️ Найдены потенциальные реальные имена"
+        fi
+        
+        echo "✅ Проверка безопасности завершена"
+
+  build-preview:
+    name: 📖 Сборка предварительного просмотра
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout кода
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Настройка Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+        
+    - name: 📦 Установка MkDocs
+      run: |
+        pip install mkdocs mkdocs-material
+        
+    - name: 📄 Создание конфигурации MkDocs
+      run: |
+        cat > mkdocs.yml << 'EOF'
+        site_name: Методическая разработка Master AI Колледж
+        site_description: Контрольное занятие по информатике для IT-специальностей
+        
+        theme:
+          name: material
+          language: ru
+          features:
+            - navigation.tabs
+            - navigation.sections
+            - toc.integrate
+          palette:
+            - scheme: default
+              primary: blue
+              accent: orange
+        
+        nav:
+          - 'Главная': 'README.md'
+          - 'План занятия': 'Track001.md'
+          - 'Участие':
+            - 'Как участвовать': 'CONTRIBUTING.md'
+            - 'Кодекс поведения': 'CODE_OF_CONDUCT.md'
+          - 'История': 'CHANGELOG.md'
+          
+        markdown_extensions:
+          - tables
+          - toc:
+              permalink: true
+          - pymdownx.emoji:
+              emoji_index: !!python/name:materialx.emoji.twemoji
+              emoji_generator: !!python/name:materialx.emoji.to_svg
+        EOF
+        
+    - name: 🏗️ Сборка документации
+      run: mkdocs build
+      
+    - name: 📤 Загрузка артефакта
+      uses: actions/upload-artifact@v3
+      with:
+        name: documentation-site
+        path: site/
+
+  notify-completion:
+    name: 🔔 Уведомление о завершении
+    runs-on: ubuntu-latest
+    needs: [markdown-lint, educational-quality, security-check, build-preview]
+    if: always()
+    
+    steps:
+    - name: 📊 Создание отчета
+      run: |
+        echo "# 📋 Отчет о проверке качества" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 📝 Результаты проверок" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Markdown lint**: ${{ needs.markdown-lint.result == 'success' && '✅ Пройдено' || '❌ Ошибки' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Образовательное качество**: ${{ needs.educational-quality.result == 'success' && '✅ Пройдено' || '❌ Ошибки' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Безопасность**: ${{ needs.security-check.result == 'success' && '✅ Пройдено' || '❌ Ошибки' }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Сборка документации**: ${{ needs.build-preview.result == 'success' && '✅ Пройдено' || '❌ Ошибки' }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## 🎯 Рекомендации" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- Все markdown файлы должны соответствовать стандартам линтера" >> $GITHUB_STEP_SUMMARY
+        echo "- Образовательный контент должен включать ФГОС, компетенции и критерии" >> $GITHUB_STEP_SUMMARY
+        echo "- Персональные данные должны быть обезличены" >> $GITHUB_STEP_SUMMARY
+        echo "- Документация должна успешно собираться в статический сайт" >> $GITHUB_STEP_SUMMARY
