@@ -1,0 +1,43 @@
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Временные файлы
+*.tmp
+*.temp
+*~
+
+# Логи
+*.log
+
+# Backup файлы
+*.bak
+*.backup
+
+# Пользовательские настройки
+config.local.*
+.env.local
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Документы Microsoft Office
+~$*.docx
+~$*.xlsx
+~$*.pptx
+*.tmp
+
+# Другие временные файлы
+*.swp
+*.swo
+*~
