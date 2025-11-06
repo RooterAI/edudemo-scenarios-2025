@@ -44,7 +44,9 @@
 ```text
 edudemo-ai-lesson/
 ├── 📋 Track001.md                  # Основной план занятия ⭐
-├── 📖 README.md                    # Документация проекта
+├── � EvaluationChecklist.md       # Чек-лист оценки занятия ⭐
+├── �📖 README.md                    # Документация проекта
+├── ⚙️ .markdownlint.json           # Конфигурация линтера
 ├── 🔧 GITHUB_SETUP_GUIDE.md       # Инструкции для GitHub
 ├── ✅ PROJECT_READY.md             # Статус готовности
 ├── 📄 Track001_Improved.md         # Альтернативная версия
@@ -161,6 +163,7 @@ edudemo-ai-lesson/
 ### 📚 Основные документы
 
 - **[Track001.md](./Track001.md)** - Полный план занятия с тремя сценариями
+- **[EvaluationChecklist.md](./EvaluationChecklist.md)** - Чек-лист оценки эффективности занятия
 - **[CONTRIBUTING.md](./CONTRIBUTING.md)** - Руководство для участников проекта
 - **[CHANGELOG.md](./CHANGELOG.md)** - История изменений проекта
 - **[LICENSE](./LICENSE)** - Условия использования (MIT)
