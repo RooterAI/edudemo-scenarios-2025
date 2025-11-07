@@ -163,8 +163,8 @@
 
 Если вы заметили неточность в журнале изменений или хотите предложить улучшение:
 
-- 🐛 **GitHub Issues**: [Создать issue](https://github.com/RooterAI/edudemo-ai-lesson/issues)
-- 💬 **Discussions**: [Обсуждения](https://github.com/RooterAI/edudemo-ai-lesson/discussions)
+- 🐛 **GitHub Issues**: [Создать issue](https://github.com/RooterAI/edudemo-scenarios-2025/issues)
+- 💬 **Discussions**: [Обсуждения](https://github.com/RooterAI/edudemo-scenarios-2025/discussions)
 - 📧 **Email**: contact[at]ai-college.edu
 
 ---

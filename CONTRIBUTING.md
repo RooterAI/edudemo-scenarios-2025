@@ -10,11 +10,11 @@
 
 ```bash
 # Форк репозитория через GitHub UI, затем клонируйте
-git clone https://github.com/ВашИмя/edudemo-ai-lesson.git
-cd edudemo-ai-lesson
+git clone https://github.com/ВашИмя/edudemo-scenarios-2025.git
+cd edudemo-scenarios-2025
 
 # Добавьте upstream репозиторий
-git remote add upstream https://github.com/RooterAI/edudemo-ai-lesson.git
+git remote add upstream https://github.com/RooterAI/edudemo-scenarios-2025.git
 ```
 
 ### 2. 🌿 Создание ветки
@@ -227,8 +227,8 @@ def calculate_sum(a, b):
 
 ## 📞 Связь с сообществом
 
-- 🐛 **Баги и проблемы:** [GitHub Issues](https://github.com/RooterAI/edudemo-ai-lesson/issues)
-- 💡 **Предложения:** [GitHub Discussions](https://github.com/RooterAI/edudemo-ai-lesson/discussions)
+- 🐛 **Баги и проблемы:** [GitHub Issues](https://github.com/RooterAI/edudemo-scenarios-2025/issues)
+- 💡 **Предложения:** [GitHub Discussions](https://github.com/RooterAI/edudemo-scenarios-2025/discussions)
 - 📧 **Личная переписка:** contact[at]ai-college.edu
 
 ---
