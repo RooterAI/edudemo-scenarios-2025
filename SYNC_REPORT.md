@@ -21,7 +21,8 @@
 - `CHANGELOG.md` - обновлены ссылки на Issues и Discussions
 
 **Изменения:**
-```
+
+```text
 edudemo-ai-lesson → edudemo-scenarios-2025
 ```
 
@@ -31,7 +32,7 @@ edudemo-ai-lesson → edudemo-scenarios-2025
 - `Track001.md` - Основной план занятия (639 строк)
 - `EvaluationChecklist.md` - Чек-лист оценивания (154 строки)
 - `Scenario1_BinaryCoding.md` - Сценарий "Двоичное кодирование" (337 строк)
-- `Scenario2_README.md` - Сценарий "Создание README" (437 строк) 
+- `Scenario2_README.md` - Сценарий "Создание README" (437 строк)
 - `Scenario3_BusinessRequirements.md` - Сценарий "Бизнес-требования" (409 строк)
 
 ### 4. ✅ Проверка внутренних ссылок
@@ -82,6 +83,7 @@ edudemo-ai-lesson → edudemo-scenarios-2025
 **GitHub URL:** https://github.com/RooterAI/edudemo-scenarios-2025
 
 ### Команды для клонирования:
+
 ```bash
 git clone https://github.com/RooterAI/edudemo-scenarios-2025.git
 cd edudemo-scenarios-2025
